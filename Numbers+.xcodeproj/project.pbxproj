@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		55CD923F21FDB8B2005C01A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CD923E21FDB8B2005C01A5 /* AppDelegate.swift */; };
-		55CD924121FDB8B2005C01A5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CD924021FDB8B2005C01A5 /* ViewController.swift */; };
 		55CD924421FDB8B2005C01A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55CD924221FDB8B2005C01A5 /* Main.storyboard */; };
 		55CD924621FDB8B3005C01A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55CD924521FDB8B3005C01A5 /* Assets.xcassets */; };
 		55CD924921FDB8B3005C01A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55CD924721FDB8B3005C01A5 /* LaunchScreen.storyboard */; };
 		55E2C5E922023D3C00DBF0F8 /* rootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E2C5E822023D3C00DBF0F8 /* rootViewController.swift */; };
 		55E2C5EB22023DD800DBF0F8 /* gameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E2C5EA22023DD800DBF0F8 /* gameViewController.swift */; };
+		55E4888C2208EFA800511D0C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CD924021FDB8B2005C01A5 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -142,8 +142,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				55E2C5EB22023DD800DBF0F8 /* gameViewController.swift in Sources */,
-				55CD924121FDB8B2005C01A5 /* ViewController.swift in Sources */,
 				55E2C5E922023D3C00DBF0F8 /* rootViewController.swift in Sources */,
+				55E4888C2208EFA800511D0C /* ViewController.swift in Sources */,
 				55CD923F21FDB8B2005C01A5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -81,6 +81,8 @@ class gameViewController: UIViewController {
             infoText.text = "Неправильно "
             trueAnswer.text = "\(sum)"
             if valueFalseAnswerCount == 3 {
+                let defaults = UserDefaults.standard
+                defaults.set(valueGameCount, forKey: "Best")
                 currentLevel.text = "GAME OVER"
                 hideButton(next: true, check: true)
                 buttonNewGame.isHidden = false
