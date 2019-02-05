@@ -9,10 +9,9 @@
 import UIKit
 
 class gameViewController: UIViewController {
-    var nLevel : Int = 0
-    var nNumbers : Int = 10
-    var nCount : Int = 1
-    var level : Int = 10
+    var minLevel : Int = 0
+    var maxLevel : Int = 10
+    var points : Int = 1
     var valueGameCount : Int = 0
     var valueTrueAnswerCount : Int = 0
     var valueFalseAnswerCount : Int = 0
@@ -33,10 +32,9 @@ class gameViewController: UIViewController {
     @IBOutlet weak var buttonNewGame: UIButton!
     @IBAction func newGame(_ sender: UIButton) {
         buttonNewGame.isHidden = true
-        nLevel = 0
-        nNumbers = 10
-        nCount = 1
-        level = 10
+        minLevel = 0
+        maxLevel = 10
+        points = 1
         valueGameCount = 0
         valueTrueAnswerCount = 0
         valueFalseAnswerCount = 0
@@ -50,29 +48,29 @@ class gameViewController: UIViewController {
         infoText.textColor = UIColor.black
         infoText.text = "Верный ответ - "
         trueAnswer.text = "????"
-        currentLevel.text = "Уровень 0 - числа до 10 (1 балл)"
+        currentLevel.text = "Уровень \(points-1) - числа от \(minLevel) до \(maxLevel) (\(points) балла)"
         hideButton(next: true, check: false)
     }
     @IBAction func check(_ sender: UIButton) {
         valueTotalOperation += 1
         let sum = (Int(numberOne.text!))! + (Int(numberTwo.text!))!
         if Int(answer.text!) == sum {
-            switch level {
-                case 10:    valueGameCount += 1
-                case 20:    valueGameCount += 2
-                case 50:    valueGameCount += 3
-                case 100:   valueGameCount += 4
-                default:    valueGameCount += 0
+            switch points {
+                case 1:   valueGameCount += 1
+                case 2:   valueGameCount += 2
+                case 3:   valueGameCount += 3
+                case 4:   valueGameCount += 4
+                default:  valueGameCount += 0
             }
             infoText.textColor = UIColor.green
             infoText.text = "Правильно "
             trueAnswer.text = "\(sum)"
             valueTrueAnswerCount += 1
             switch valueTrueAnswerCount {
-                case 10: level = 20; nLevel = 1; nNumbers = 20; nCount = 2
-                case 20: level = 50; nLevel = 2; nNumbers = 50; nCount = 3
-                case 30: level = 100; nLevel = 3; nNumbers = 100; nCount = 4
-                default: level += 0
+                case 10: points = 2; minLevel = 11; maxLevel = 20
+                case 20: points = 3; minLevel = 21; maxLevel = 50
+                case 30: points = 4; minLevel = 51; maxLevel = 100
+                default: points += 0
             }
             hideButton(next: false, check: true)
         } else {
@@ -96,7 +94,7 @@ class gameViewController: UIViewController {
         falseAnswerCount.text = "\(valueFalseAnswerCount)"
     }
     @IBAction func nextOperation(_ sender: UIButton) {
-        currentLevel.text = "Уровень \(nLevel) - числа до \(nNumbers) (\(nCount) балл)"
+        currentLevel.text = "Уровень \(points-1) - числа от \(minLevel) до \(maxLevel) (\(points) балла)"
         answer.text = nil
         infoText.textColor = UIColor.black
         infoText.text = "Верный ответ - "
@@ -105,8 +103,8 @@ class gameViewController: UIViewController {
         setNumbers()
     }
     func setNumbers() {
-        numberOne.text = "\(arc4random_uniform(UInt32(level)))"
-        numberTwo.text = "\(arc4random_uniform(UInt32(level)))"
+        numberOne.text = "\(arc4random_uniform(UInt32(maxLevel-minLevel)+1) + UInt32(minLevel))"
+        numberTwo.text = "\(arc4random_uniform(UInt32(maxLevel-minLevel)+1) + UInt32(minLevel))"
     }
     func hideButton(next:Bool, check:Bool) {
         buttonCheck.isHidden = check
@@ -114,7 +112,7 @@ class gameViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        currentLevel.text = "Уровень 0 - числа до 10 (1 балл)"
+        currentLevel.text = "Уровень \(points-1) - числа от \(minLevel) до \(maxLevel) (\(points) балла)"
         setNumbers()
     }
     

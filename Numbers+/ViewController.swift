@@ -9,7 +9,9 @@
 import UIKit
 
 class ViewController: UIViewController {
-    var level : Int = 10
+    var minLevel : Int = 0
+    var maxLevel : Int = 10
+    var points : Int = 1
     var valueGameCount : Int = 0
     var valueTrueAnswerCount : Int = 0
     var valueFalseAnswerCount : Int = 0
@@ -34,17 +36,13 @@ class ViewController: UIViewController {
     @IBAction func levelChoose (_ sender: UIButton) {
         switch sender.restorationIdentifier {
         case "zero":
-            level = 10
-            currentLevel.text = "Уровень 0 - числа до 10 (1 балл)"
+            setLevel(minLevel: 0, maxLevel: 10, points: 1)
         case "one":
-            level = 20
-            currentLevel.text = "Уровень 1 - числа до 20 (2 балла)"
+            setLevel(minLevel: 11, maxLevel: 20, points: 2)
         case "two":
-            level = 50
-            currentLevel.text = "Уровень 2 - числа до 50 (3 балла)"
+            setLevel(minLevel: 21, maxLevel: 50, points: 3)
         case "three":
-            level = 100
-            currentLevel.text = "Уровень 3 - числа до 100 (4 балла)"
+            setLevel(minLevel: 51, maxLevel: 100, points: 4)
         default:
             return
         }
@@ -53,12 +51,12 @@ class ViewController: UIViewController {
         valueTotalOperation += 1
         let sum = (Int(numberOne.text!))! + (Int(numberTwo.text!))!
         if Int(answer.text!) == sum {
-            switch level {
-                case 10:    valueGameCount += 1
-                case 20:    valueGameCount += 2
-                case 50:    valueGameCount += 3
-                case 100:   valueGameCount += 4
-                default:    valueGameCount += 0
+            switch points {
+                case 1:   valueGameCount += 1
+                case 2:   valueGameCount += 2
+                case 3:   valueGameCount += 3
+                case 4:   valueGameCount += 4
+                default:  valueGameCount += 0
             }
             infoText.textColor = UIColor.green
             infoText.text = "Правильно "
@@ -100,15 +98,22 @@ class ViewController: UIViewController {
         }
     }
     func setNumbers() {
-        numberOne.text = "\(arc4random_uniform(UInt32(level)))"
-        numberTwo.text = "\(arc4random_uniform(UInt32(level)))"
+        numberOne.text = "\(arc4random_uniform(UInt32(maxLevel-minLevel)+1) + UInt32(minLevel))"
+        numberTwo.text = "\(arc4random_uniform(UInt32(maxLevel-minLevel)+1) + UInt32(minLevel))"
     }
     func hideButton(next:Bool, check:Bool) {
         buttonCheck.isHidden = check
         buttonNext.isHidden = next
     }
+    func setLevel(minLevel:Int, maxLevel:Int, points:Int) {
+        self.minLevel = minLevel
+        self.maxLevel = maxLevel
+        self.points = points
+        currentLevel.text = "Уровень \(points-1) - числа от \(minLevel) до \(maxLevel) (\(points) балла)"
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        currentLevel.text = "Уровень \(points-1) - числа от \(minLevel) до \(maxLevel) (\(points) балла)"
         setNumbers()
     }
  
