@@ -225,7 +225,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Уровень 0 - числа до 10 (1 балл)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tTd-sc-bYl">
-                                <rect key="frame" x="59" y="96" width="258" height="21"/>
+                                <rect key="frame" x="58.666666666666657" y="96" width="258" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -286,6 +286,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="92" y="131.52709359605913"/>
+        </scene>
+        <!--Log Table View Controller-->
+        <scene sceneID="3NS-xc-NeZ">
+            <objects>
+                <tableViewController id="Y0h-u8-bll" customClass="LogTableViewController" customModule="Numbers_" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="4or-AD-CKh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellOne" id="ePZ-wN-F8B">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ePZ-wN-F8B" id="5xY-Mm-xJD">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Y0h-u8-bll" id="uP0-VL-b2v"/>
+                            <outlet property="delegate" destination="Y0h-u8-bll" id="fof-dQ-HyS"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="irI-kY-BEU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="914" y="-536"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="MgS-wg-AkF">
@@ -426,8 +454,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vkB-C5-8aK">
+                                <rect key="frame" x="162" y="360" width="51" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <state key="normal" title="Log">
+                                    <color key="titleColor" red="0.05471105825" green="0.7676692034" blue="0.080938977950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Y0h-u8-bll" kind="show" id="Enf-GQ-n4x"/>
+                                </connections>
+                            </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7JO-Dp-5lw">
-                                <rect key="frame" x="102" y="357" width="171" height="55"/>
+                                <rect key="frame" x="102" y="412" width="171" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="36"/>
                                 <state key="normal" title="New Game"/>
@@ -446,6 +485,7 @@
                     <connections>
                         <outlet property="answer" destination="FKz-Cj-0IF" id="N3H-qV-FFp"/>
                         <outlet property="buttonCheck" destination="hFZ-bE-6bz" id="EAE-Mf-re9"/>
+                        <outlet property="buttonLog" destination="vkB-C5-8aK" id="npG-5s-pv2"/>
                         <outlet property="buttonNewGame" destination="7JO-Dp-5lw" id="VWJ-IZ-4ZN"/>
                         <outlet property="buttonNext" destination="FkX-3h-WqB" id="eUQ-H4-NMY"/>
                         <outlet property="currentLevel" destination="sbs-ZU-USG" id="ZvO-RQ-dbd"/>
