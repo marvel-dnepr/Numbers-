@@ -17,6 +17,9 @@ class gameViewController: UIViewController {
     var valueFalseAnswerCount : Int = 0
     var valueTotalOperation : Int = 0
     static var arrayAnswer : [Int : String] = [:]
+    @IBOutlet weak var labelHintOne: UILabel!
+    @IBOutlet weak var labelHintTwo: UILabel!
+    @IBOutlet weak var labelHintSign: UILabel!
     @IBOutlet weak var buttonNext: UIButton!
     @IBOutlet weak var buttonCheck: UIButton!
     @IBOutlet weak var currentLevel: UILabel!
@@ -32,6 +35,24 @@ class gameViewController: UIViewController {
     @IBOutlet weak var totalOperation: UILabel!
     @IBOutlet weak var buttonNewGame: UIButton!
     @IBOutlet weak var buttonLog: UIButton!
+    @IBAction func hint(_ sender: UIButton) {
+        let a = Hint()
+        let n = a.getHint(numberOne: Int(numberOne.text!)!, numberTwo: Int(numberTwo.text!)!)
+        switch n[2] {
+            case 1:
+                labelHintOne.text = "\(n[0]) + \(n[1])"
+                labelHintTwo.text = numberTwo.text
+            case 2:
+                labelHintOne.text = numberOne.text
+                labelHintTwo.text = "\(n[0]) + \(n[1])"
+            default:
+                labelHintOne.text = numberOne.text
+                labelHintTwo.text = numberTwo.text
+        }
+        labelHintOne.isHidden = false
+        labelHintTwo.isHidden = false
+        labelHintSign.isHidden = false
+    }
     @IBAction func newGame(_ sender: UIButton) {
         gameViewController.arrayAnswer.removeAll()
         buttonNewGame.isHidden = true
@@ -53,6 +74,9 @@ class gameViewController: UIViewController {
         trueAnswer.text = "????"
         currentLevel.text = "Уровень \(points-1) - числа от \(minLevel) до \(maxLevel) (\(points) балла)"
         hideButton(next: true, check: false, log: true)
+        labelHintOne.isHidden = true
+        labelHintTwo.isHidden = true
+        labelHintSign.isHidden = true
     }
     @IBAction func check(_ sender: UIButton) {
         valueTotalOperation += 1
@@ -109,6 +133,9 @@ class gameViewController: UIViewController {
         trueAnswer.text = "????"
         hideButton(next: true, check: false, log: true)
         setNumbers()
+        labelHintOne.isHidden = true
+        labelHintTwo.isHidden = true
+        labelHintSign.isHidden = true
     }
     func setNumbers() {
         numberOne.text = "\(arc4random_uniform(UInt32(maxLevel-minLevel)+1) + UInt32(minLevel))"
