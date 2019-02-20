@@ -8,16 +8,18 @@
 
 import UIKit
 
-class rootViewController: UIViewController {
+class RootViewController: UIViewController {
    
-    @IBOutlet weak var labelBestScore: UILabel!
+    @IBOutlet weak var labelBestResult: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         let defaults = UserDefaults.standard
-        labelBestScore.text = defaults.string(forKey: "Best")
+        labelBestResult.text = defaults.string(forKey: "BestResult")
     }
 }
 

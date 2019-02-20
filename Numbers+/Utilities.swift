@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Hint {
     var numberOne : Int = 0
@@ -41,4 +42,6 @@ class Hint {
         }
     return [self.numberOne, self.numberTwo, self.flag]
     }
+
+
 }
