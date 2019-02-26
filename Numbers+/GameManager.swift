@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 
 class GameManager {
 
@@ -19,44 +18,47 @@ class GameManager {
     var pointsScored: Int = 0
     var correctAnswersCounter: Int = 0
     var wrongAnswersCounter: Int = 0
+    var numberOfPossibleErrors: Int = 3
     var exampleNumber: Int = 1
     var arrayOfAnswers: [String] = []
-    
+    var commentAnswers: String = ""
+    var levelNumberText = "Уровень - "
+    var pointsScoredText = "Количество баллов - "
+    var exampleNumberText = "Пример - "
+    var wrongAnswersText = "Ошибки - "
+   
     //Метод установки случайных чисел в пример
-    func setNumbers(numberOne: UILabel, numberTwo: UILabel) {
-        numberOne.text = "\(arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber))"
-        numberTwo.text = "\(arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber))"
+    func setNumbers() -> String {
+        return "\(arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber))"
     }
 
-    //Метод скрытия объектов
-    func hideObject(objects: [UIView]) {
-        for someObject in objects {
-            someObject.isHidden = true
-        }
-    }
-
-    //Метод отображения объектов
-    func showObject(objects: [UIView]) {
-        for someObject in objects {
-            someObject.isHidden = false
-        }
-    }
-
-    //Метод проверяет ответ, устанавливает уровень сложности, добавляет баллы. Возвращает истина или ложь и правильный ответ
-    func isAnswerCorrect(numberOne: UILabel, numberTwo: UILabel, answer: UITextField) -> (Bool,Int) {
-        let sum = (Int(numberOne.text!))! + (Int(numberTwo.text!))!
-        if Int(answer.text!) == sum {
-            arrayOfAnswers.append("Правильно: \(numberOne.text!) + \(numberTwo.text!) = \(sum)")
-            correctAnswersCounter += 1
-            exampleNumber += 1
-            addPoints()
-            setLevel()
-            return (true, sum)
+    //Метод проверяет ответ, записывает пример в массив, ведет счет правильных и не правильных ответов, ведет счет общего количества примеров, устанавливает уровень сложности, добавляет баллы и запоминает лучший результат. Возвращает результат проверки
+    func isAnswerCorrect(numberOne: Int, numberTwo: Int, answer: String) -> (String) {
+        if answer == "" {
+            commentAnswers = "ВВЕДИТЕ ОТВЕТ!!!!!!"
+            return "Nil"
         } else {
-            arrayOfAnswers.append("ОШИБКА: \(numberOne.text!) + \(numberTwo.text!) = \(sum) а не \(answer.text!)")
-            exampleNumber += 1
-            wrongAnswersCounter += 1
-            return (false, sum)
+            let sum = numberOne + numberTwo
+            if Int(answer) == sum {
+                arrayOfAnswers.append("\(exampleNumber). Правильно: \(numberOne) + \(numberTwo) = \(sum)")
+                commentAnswers = "ПРАВИЛЬНО"
+                correctAnswersCounter += 1
+                exampleNumber += 1
+                addPoints()
+                setLevel()
+                return "Yes"
+            } else {
+                arrayOfAnswers.append("\(exampleNumber). ОШИБКА: \(numberOne) + \(numberTwo) = \(sum) а не \(String(describing: answer))")
+                commentAnswers = "НЕ ВЕРНО!!!! ОТВЕТ = \(sum)"
+                exampleNumber += 1
+                wrongAnswersCounter += 1
+                if wrongAnswersCounter == numberOfPossibleErrors {
+                    rememberBestResult()
+                    return "No. Game over"
+                } else {
+                    return "No"
+                }
+            }
         }
     }
     
@@ -105,4 +107,12 @@ class GameManager {
             }
         }
     }
+
+    //Метод генерирования подсказки. ПРИДУМАТЬ АЛГОРИТМ !!!!!!!
+    func getHint(numberOne : Int, numberTwo : Int) -> Int {
+        let hint = numberOne + numberTwo
+        return hint
+    }
+
 }
+

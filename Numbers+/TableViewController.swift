@@ -25,6 +25,9 @@ class TableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CellOne", for: indexPath) as UITableViewCell
+        let image = UIImage(named: "check")
+        cell.imageView?.image = image
+        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 17)
         cell.textLabel?.text = GameManager.main.arrayOfAnswers[indexPath.row]
         return cell
     }
