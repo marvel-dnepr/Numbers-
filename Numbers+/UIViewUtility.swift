@@ -1,8 +1,8 @@
 import UIKit
 
-class UIViewUtilities {
+class UIViewUtility {
     
-    static let main = UIViewUtilities()
+    static let main = UIViewUtility()
     
     //Метод скрытия объектов
     func hideObject(objects: [UIView]) {

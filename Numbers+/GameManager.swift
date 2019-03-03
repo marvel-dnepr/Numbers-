@@ -8,10 +8,17 @@
 
 import Foundation
 
+enum StatusGame {
+    case stillPlaying
+    case gameOver
+}
+
 class GameManager {
 
     static let main = GameManager()
 
+    var numberOne: UInt32 = 0
+    var numberTwo: UInt32 = 0
     var minNumber: Int = 0
     var maxNumber: Int = 10
     var level: Int = 1
@@ -21,44 +28,41 @@ class GameManager {
     var numberOfPossibleErrors: Int = 3
     var exampleNumber: Int = 1
     var arrayOfAnswers: [String] = []
-    var commentAnswers: String = ""
-    var levelNumberText = "Уровень - "
-    var pointsScoredText = "Количество баллов - "
-    var exampleNumberText = "Пример - "
-    var wrongAnswersText = "Ошибки - "
+    var statusGame = StatusGame.stillPlaying
+    
+    //Метод старта новой игры
+    func starNewGame() {
+        resetAllValues()
+        generateNumbers()
+    }
    
-    //Метод установки случайных чисел в пример
-    func setNumbers() -> String {
-        return "\(arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber))"
+    //Метод генерирования случайных чисел
+    func generateNumbers() {
+        self.numberOne = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
+        self.numberTwo = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
     }
 
     //Метод проверяет ответ, записывает пример в массив, ведет счет правильных и не правильных ответов, ведет счет общего количества примеров, устанавливает уровень сложности, добавляет баллы и запоминает лучший результат. Возвращает результат проверки
-    func isAnswerCorrect(numberOne: Int, numberTwo: Int, answer: String) -> (String) {
-        if answer == "" {
-            commentAnswers = "ВВЕДИТЕ ОТВЕТ!!!!!!"
-            return "Nil"
+    func isAnswerCorrect(answer: Int) -> Bool {
+        let sum = numberOne + numberTwo
+        if answer == sum {
+            arrayOfAnswers.append("\(exampleNumber). Правильно: \(numberOne) + \(numberTwo) = \(sum)")
+            correctAnswersCounter += 1
+            exampleNumber += 1
+            addPoints()
+            setLevel()
+            return true
         } else {
-            let sum = numberOne + numberTwo
-            if Int(answer) == sum {
-                arrayOfAnswers.append("\(exampleNumber). Правильно: \(numberOne) + \(numberTwo) = \(sum)")
-                commentAnswers = "ПРАВИЛЬНО"
-                correctAnswersCounter += 1
-                exampleNumber += 1
-                addPoints()
-                setLevel()
-                return "Yes"
+            arrayOfAnswers.append("\(exampleNumber). ОШИБКА: \(numberOne) + \(numberTwo) = \(sum) а не \(answer)")
+            exampleNumber += 1
+            wrongAnswersCounter += 1
+            if wrongAnswersCounter == numberOfPossibleErrors {
+                rememberBestResult()
+                statusGame = .gameOver
             } else {
-                arrayOfAnswers.append("\(exampleNumber). ОШИБКА: \(numberOne) + \(numberTwo) = \(sum) а не \(String(describing: answer))")
-                commentAnswers = "НЕ ВЕРНО!!!! ОТВЕТ = \(sum)"
-                exampleNumber += 1
-                wrongAnswersCounter += 1
-                if wrongAnswersCounter == numberOfPossibleErrors {
-                    rememberBestResult()
-                    return "No. Game over"
-                } else {
-                    return "No"
-                }
+                statusGame = .stillPlaying
             }
+            return false
         }
     }
     

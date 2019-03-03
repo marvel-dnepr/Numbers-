@@ -9,26 +9,35 @@
 import UIKit
 
 class TableViewController: UITableViewController {
-
+    
+    var arrayOfAnswers: [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let xib = UINib(nibName: "MyCell", bundle: Bundle.main)
+        tableView?.register(xib, forCellReuseIdentifier: "MyCell")
     }
 
-     override func numberOfSections(in tableView: UITableView) -> Int {
-         return 1
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         return GameManager.main.arrayOfAnswers.count
+        return arrayOfAnswers.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CellOne", for: indexPath) as UITableViewCell
-        let image = UIImage(named: "check")
-        cell.imageView?.image = image
-        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 17)
-        cell.textLabel?.text = GameManager.main.arrayOfAnswers[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MyCell", for: indexPath) as UITableViewCell
+        let check = UIImage(named: "check")
+        let x = UIImage(named: "x")
+        let lbl = cell.contentView.viewWithTag(1) as! UILabel
+        let img = cell.contentView.viewWithTag(2) as! UIImageView
+        lbl.text = arrayOfAnswers[indexPath.row]
+        if arrayOfAnswers[indexPath.row].contains("Правильно") {
+            img.image = check
+        } else {
+            img.image = x
+        }
         return cell
     }
 

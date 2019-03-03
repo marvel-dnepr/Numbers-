@@ -15,63 +15,71 @@ class GameViewController: UIViewController {
     @IBOutlet weak var buttonNext: UIButton!
     
     @IBAction func buttonNewGame(_ sender: UIButton) {
-        GameManager.main.resetAllValues()
-        changeValuesInLabels()
-        UIViewUtilities.main.hideObject(objects: [buttonNext, buttonNewGame, labelCommentAnswers, buttonLog])
-        UIViewUtilities.main.showObject(objects: [buttonCheck])
-        setTwoNumbers()
+        GameManager.main.starNewGame()
+        updateLabels()
+        UIViewUtility.main.hideObject(objects: [buttonNext, buttonNewGame, labelCommentAnswers, buttonLog])
+        buttonCheck.isHidden = false
     }
     
     @IBAction func buttonCheck(_ sender: UIButton) {
-        let resultOfChecking = GameManager.main.isAnswerCorrect(numberOne: Int(labelNumberOne.text!)!, numberTwo: Int(labelNumberTwo.text!)!, answer: textFieldAnswer.text!)
-        switch resultOfChecking {
-        case "Nil":
+        if textFieldAnswer.text?.isEmpty == true {
             labelCommentAnswers.textColor = UIColor.red
-            labelCommentAnswers.text = GameManager.main.commentAnswers
-            UIViewUtilities.main.showObject(objects: [labelCommentAnswers])
-        case "Yes":
-            UIViewUtilities.main.hideObject(objects: [buttonCheck])
-            labelCommentAnswers.textColor = UIColor.blue
-            labelCommentAnswers.text = GameManager.main.commentAnswers
-            UIViewUtilities.main.showObject(objects: [buttonNext, labelCommentAnswers])
-        case "No":
-            UIViewUtilities.main.hideObject(objects: [buttonCheck])
-            labelCommentAnswers.textColor = UIColor.red
-            labelCommentAnswers.text = GameManager.main.commentAnswers
-            UIViewUtilities.main.showObject(objects: [buttonNext, labelCommentAnswers])
-        case "No. Game over":
-            labelWrongAnswers.text = "\(GameManager.main.wrongAnswersText)\(GameManager.main.wrongAnswersCounter)"
-            UIViewUtilities.main.hideObject(objects: [buttonCheck])
-            labelCommentAnswers.textColor = UIColor.red
-            labelCommentAnswers.text = GameManager.main.commentAnswers
-            UIViewUtilities.main.showObject(objects: [buttonNewGame, labelCommentAnswers, buttonLog])
-        default: GameManager.main.resetAllValues()
+            labelCommentAnswers.text = "ВВЕДИТЕ ОТВЕТ !!!"
+            labelCommentAnswers.isHidden = false
+        } else {
+            let resultOfChecking = GameManager.main.isAnswerCorrect(answer: Int(textFieldAnswer.text!)!)
+            switch resultOfChecking {
+            case true:
+                labelCommentAnswers.textColor = UIColor.blue
+                labelCommentAnswers.text = "ПРАВИЛЬНО"
+                buttonCheck.isHidden  = true
+                buttonNext.isHidden = false
+                labelCommentAnswers.isHidden = false
+            case false:
+                if GameManager.main.statusGame == .stillPlaying {
+                    labelCommentAnswers.textColor = UIColor.red
+                    labelCommentAnswers.text = "НЕ ВЕРНО!!!! ОТВЕТ = \(GameManager.main.numberOne + GameManager.main.numberTwo)"
+                    labelWrongAnswers.text = "Ошибки - \(GameManager.main.wrongAnswersCounter)"
+                    buttonCheck.isHidden  = true
+                    buttonNext.isHidden = false
+                    labelCommentAnswers.isHidden = false
+                } else {
+                    labelWrongAnswers.text = "Ошибки - \(GameManager.main.wrongAnswersCounter)"
+                    buttonCheck.isHidden = true
+                    labelCommentAnswers.textColor = UIColor.red
+                    labelCommentAnswers.text = "Game Over !!!"
+                    UIViewUtility.main.showObject(objects: [buttonNewGame, labelCommentAnswers, buttonLog])
+                }
+            }
         }
     }
     
     @IBAction func buttonNext(_ sender: UIButton) {
-        changeValuesInLabels()
-        UIViewUtilities.main.hideObject(objects: [labelCommentAnswers, buttonNext])
-        UIViewUtilities.main.showObject(objects: [buttonCheck])
-        setTwoNumbers()
+        buttonNext.isHidden = true
+        labelCommentAnswers.isHidden = true
+        buttonCheck.isHidden = false
+        GameManager.main.generateNumbers()
+        updateLabels()
     }
     
-    func changeValuesInLabels() {
-        labelLevelNumber.text = "\(GameManager.main.levelNumberText)\(GameManager.main.level)"
-        labelPointsScored.text = "\(GameManager.main.pointsScoredText)\(GameManager.main.pointsScored)"
-        labelExampleNumber.text = "\(GameManager.main.exampleNumberText)\(GameManager.main.exampleNumber)"
-        labelWrongAnswers.text = "\(GameManager.main.wrongAnswersText)\(GameManager.main.wrongAnswersCounter)"
+    func updateLabels() {
+        labelNumberOne.text = "\(GameManager.main.numberOne)"
+        labelNumberTwo.text = "\(GameManager.main.numberTwo)"
+        labelLevelNumber.text = "Уровень - \(GameManager.main.level)"
+        labelPointsScored.text = "Количество баллов - \(GameManager.main.pointsScored)"
+        labelExampleNumber.text = "Пример - \(GameManager.main.exampleNumber)"
+        labelWrongAnswers.text = "Ошибки - \(GameManager.main.wrongAnswersCounter)"
         textFieldAnswer.text = nil
-    }
-    
-    func setTwoNumbers () {
-        labelNumberOne.text = GameManager.main.setNumbers()
-        labelNumberTwo.text = GameManager.main.setNumbers()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        GameManager.main.resetAllValues()
-        setTwoNumbers()
+        GameManager.main.starNewGame()
+        updateLabels()
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! TableViewController
+        destinationVC.arrayOfAnswers = GameManager.main.arrayOfAnswers
     }
 }
