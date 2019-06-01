@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum StatusGame {
     case stillPlaying
@@ -29,6 +30,19 @@ class GameManager {
     var exampleNumber: Int = 1
     var arrayOfAnswers: [String] = []
     var statusGame = StatusGame.stillPlaying
+    var statusSum = true
+    var statusSub = true
+    var statusMult = true
+    var statusDivide = true
+    var statusGameType = false
+    var textColorSumSwitchLabel = UIColor.black
+    var textColorSubSwitchLabel = UIColor.black
+    var textColorMultSwitchLabel = UIColor.black
+    var textColorDivideSwitchLabel = UIColor.black
+    var textColorGameTypeSwitchText = UIColor.gray
+    
+    
+    
     
     //Метод старта новой игры
     func starNewGame() {
