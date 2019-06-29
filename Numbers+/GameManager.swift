@@ -20,7 +20,7 @@ class GameManager {
 
     var numberOne: UInt32 = 0
     var numberTwo: UInt32 = 0
-    var minNumber: Int = 0
+    var minNumber: Int = 1
     var maxNumber: Int = 10
     var level: Int = 1
     var pointsScored: Int = 0
@@ -31,45 +31,116 @@ class GameManager {
     var arrayOfAnswers: [String] = []
     var statusGame = StatusGame.stillPlaying
     var statusSum = true
-    var statusSub = true
-    var statusMult = true
-    var statusDivide = true
+    var statusSub = false
+    var statusMult = false
+    var statusDivide = false
     var statusGameType = false
     var textColorSumSwitchLabel = UIColor.black
-    var textColorSubSwitchLabel = UIColor.black
-    var textColorMultSwitchLabel = UIColor.black
-    var textColorDivideSwitchLabel = UIColor.black
+    var textColorSubSwitchLabel = UIColor.gray
+    var textColorMultSwitchLabel = UIColor.gray
+    var textColorDivideSwitchLabel = UIColor.gray
     var textColorGameTypeSwitchText = UIColor.gray
-    
-    
-    
+    var action: Int = 1
+    var sign = "+"
+    var trueAnswer: Int = 0
+    var lastAnswer: UInt32 = 0
     
     //Метод старта новой игры
     func starNewGame() {
         resetAllValues()
+        setAction()
         generateNumbers()
     }
-   
-    //Метод генерирования случайных чисел
-    func generateNumbers() {
-        self.numberOne = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
-        self.numberTwo = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
+    
+    //Мето случайного выбора (+ - * /) и установки действия в пример
+    func setAction() {
+        action = 0
+        while action == 0 {
+            let someAction = Int(arc4random_uniform(UInt32(5)))
+            switch someAction {
+            case 1: if statusSum == true {action = 1; sign = "+"} //+
+            case 2: if statusSub == true {action = 2; sign = "-"} //-
+            case 3: if statusMult == true {action = 3; sign = "*"} // умножить
+            case 4: if statusDivide == true {action = 4; sign = "/"} // разделить
+            default: action = 0
+            }
+        }
     }
-
+    
+    //Метод генерирования случайных чисел, если выбрано деление, тогда подбирает числа чтоб деление было без остатка и числа были не одинаковыми и делитель не равнялся единице. Если выбрано умножить, тогда исключаются единицы.
+    func generateNumbers() {
+        if GameManager.main.statusGameType == false {
+            if GameManager.main.sign == "/" {
+                var a = 1
+                while a != 0 {
+                    self.numberOne = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
+                    self.numberTwo = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
+                    a = Int(GameManager.main.numberOne) % Int(GameManager.main.numberTwo)
+                    if GameManager.main.numberOne == GameManager.main.numberTwo || GameManager.main.numberTwo == 1 {
+                        a = 1
+                    }
+                }
+            } else if GameManager.main.sign == "*" {
+                var a = 1
+                while a != 0 {
+                    self.numberOne = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
+                    self.numberTwo = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
+                    if GameManager.main.numberOne == 1 || GameManager.main.numberTwo == 1 {
+                        a = 1
+                    } else {a = 0}
+                }
+            } else {
+                self.numberOne = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
+                self.numberTwo = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
+            }
+        } else {
+            if GameManager.main.sign == "/" {
+                var a = 1
+                while a != 0 {
+                    self.numberOne = GameManager.main.lastAnswer
+                    self.numberTwo = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
+                    a = Int(GameManager.main.numberOne) % Int(GameManager.main.numberTwo)
+                    if GameManager.main.numberOne == GameManager.main.numberTwo || GameManager.main.numberTwo == 1 {
+                        a = 1
+                    }
+                }
+            } else if GameManager.main.sign == "*" {
+                var a = 1
+                while a != 0 {
+                    self.numberOne = GameManager.main.lastAnswer
+                    self.numberTwo = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
+                    if GameManager.main.numberTwo == 1 {
+                        a = 1
+                    } else {a = 0}
+                }
+            } else {
+                self.numberOne = GameManager.main.lastAnswer
+                self.numberTwo = arc4random_uniform(UInt32(maxNumber-minNumber)+1) + UInt32(minNumber)
+            }
+        }
+    }
     //Метод проверяет ответ, записывает пример в массив, ведет счет правильных и не правильных ответов, ведет счет общего количества примеров, устанавливает уровень сложности, добавляет баллы и запоминает лучший результат. Возвращает результат проверки
     func isAnswerCorrect(answer: Int) -> Bool {
-        let sum = numberOne + numberTwo
-        if answer == sum {
-            arrayOfAnswers.append("\(exampleNumber). Правильно: \(numberOne) + \(numberTwo) = \(sum)")
+        switch sign {
+            case "+": trueAnswer = Int(numberOne + numberTwo)
+            case "-": trueAnswer = Int(numberOne) - Int(numberTwo)
+            case "*": trueAnswer = Int(numberOne * numberTwo)
+            case "/": trueAnswer = Int(numberOne / numberTwo)
+            default: trueAnswer = Int(numberOne + numberTwo)
+        }
+        if answer == trueAnswer {
+            arrayOfAnswers.append("\(exampleNumber). Правильно: \(numberOne) \(sign) \(numberTwo) = \(trueAnswer)")
             correctAnswersCounter += 1
             exampleNumber += 1
             addPoints()
             setLevel()
+            GameManager.main.lastAnswer = UInt32(answer)
             return true
         } else {
-            arrayOfAnswers.append("\(exampleNumber). ОШИБКА: \(numberOne) + \(numberTwo) = \(sum) а не \(answer)")
+            arrayOfAnswers.append("\(exampleNumber). ОШИБКА: \(numberOne) \(sign) \(numberTwo) = \(trueAnswer) а не \(answer)")
             exampleNumber += 1
             wrongAnswersCounter += 1
+            GameManager.main.lastAnswer = UInt32(trueAnswer)
             if wrongAnswersCounter == numberOfPossibleErrors {
                 rememberBestResult()
                 statusGame = .gameOver
@@ -83,9 +154,10 @@ class GameManager {
     //Метод повышения уровня сложности в зависимости от количества правильных ответов
     func setLevel() {
         switch correctAnswersCounter {
-            case  5: level = 2; minNumber = 11; maxNumber = 20
-            case 20: level = 3; minNumber = 21; maxNumber = 50
-            case 30: level = 4; minNumber = 51; maxNumber = 100
+            //Убрал ограничение минимального числа, чтоб правильно работал подбор чисел при делении
+            case  5: level = 2; /*minNumber = 11;*/ maxNumber = 20
+            case 20: level = 3; /*minNumber = 21;*/ maxNumber = 50
+            case 30: level = 4; /*minNumber = 51;*/ maxNumber = 100
             default: level += 0
         }
     }
@@ -103,7 +175,7 @@ class GameManager {
 
     //Метод сброса всех значений до стартовых
     func resetAllValues() {
-        minNumber = 0
+        minNumber = 1
         maxNumber = 10
         level = 1
         pointsScored = 0

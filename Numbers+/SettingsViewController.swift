@@ -14,50 +14,65 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var switchGameType: UISwitch!
     
     @IBAction func sumSwitch(_ sender: UISwitch) {
-        if GameManager.main.statusSum == false {
-            GameManager.main.statusSum = true
-            GameManager.main.textColorSumSwitchLabel = UIColor.black
-            labelSum.textColor = GameManager.main.textColorSumSwitchLabel
+        if switchSub.isOn == false && switchMult.isOn == false && switchDivide.isOn == false {
+            switchSum.isOn = true
         } else {
-            GameManager.main.statusSum = false
-            GameManager.main.textColorSumSwitchLabel = UIColor.gray
-            labelSum.textColor = GameManager.main.textColorSumSwitchLabel
+            if GameManager.main.statusSum == false {
+                GameManager.main.statusSum = true
+                GameManager.main.textColorSumSwitchLabel = UIColor.black
+                labelSum.textColor = GameManager.main.textColorSumSwitchLabel
+            } else {
+                GameManager.main.statusSum = false
+                GameManager.main.textColorSumSwitchLabel = UIColor.gray
+                labelSum.textColor = GameManager.main.textColorSumSwitchLabel
+            }
         }
     }
-    
     @IBAction func subtractionSwitch(_ sender: UISwitch) {
-        if GameManager.main.statusSub == false {
-            GameManager.main.statusSub = true
-            GameManager.main.textColorSubSwitchLabel = UIColor.black
-            labelSub.textColor = GameManager.main.textColorSubSwitchLabel
+        if switchSum.isOn == false && switchMult.isOn == false && switchDivide.isOn == false {
+            switchSub.isOn = true
         } else {
-            GameManager.main.statusSub = false
-            GameManager.main.textColorSubSwitchLabel = UIColor.gray
-            labelSub.textColor = GameManager.main.textColorSubSwitchLabel
+            if GameManager.main.statusSub == false {
+                GameManager.main.statusSub = true
+                GameManager.main.textColorSubSwitchLabel = UIColor.black
+                labelSub.textColor = GameManager.main.textColorSubSwitchLabel
+            } else {
+                GameManager.main.statusSub = false
+                GameManager.main.textColorSubSwitchLabel = UIColor.gray
+                labelSub.textColor = GameManager.main.textColorSubSwitchLabel
+            }
         }
     }
     
     @IBAction func multiplicationSwitch(_ sender: UISwitch) {
-        if GameManager.main.statusMult == false {
-            GameManager.main.statusMult = true
-            GameManager.main.textColorMultSwitchLabel = UIColor.black
-            labelMult.textColor = GameManager.main.textColorMultSwitchLabel
+        if switchSum.isOn == false && switchSub.isOn == false && switchDivide.isOn == false {
+            switchMult.isOn = true
         } else {
-            GameManager.main.statusMult = false
-            GameManager.main.textColorMultSwitchLabel = UIColor.gray
-            labelMult.textColor = GameManager.main.textColorMultSwitchLabel
+            if GameManager.main.statusMult == false {
+                GameManager.main.statusMult = true
+                GameManager.main.textColorMultSwitchLabel = UIColor.black
+                labelMult.textColor = GameManager.main.textColorMultSwitchLabel
+            } else {
+                GameManager.main.statusMult = false
+                GameManager.main.textColorMultSwitchLabel = UIColor.gray
+                labelMult.textColor = GameManager.main.textColorMultSwitchLabel
+            }
         }
     }
     
     @IBAction func divideSwitch(_ sender: UISwitch) {
-        if GameManager.main.statusDivide == false {
-            GameManager.main.statusDivide = true
-            GameManager.main.textColorDivideSwitchLabel = UIColor.black
-            labelDivide.textColor = GameManager.main.textColorDivideSwitchLabel
+        if switchSum.isOn == false && switchMult.isOn == false && switchSub.isOn == false {
+            switchDivide.isOn = true
         } else {
-            GameManager.main.statusDivide = false
-            GameManager.main.textColorDivideSwitchLabel = UIColor.gray
-            labelDivide.textColor = GameManager.main.textColorDivideSwitchLabel
+            if GameManager.main.statusDivide == false {
+                GameManager.main.statusDivide = true
+                GameManager.main.textColorDivideSwitchLabel = UIColor.black
+                labelDivide.textColor = GameManager.main.textColorDivideSwitchLabel
+            } else {
+                GameManager.main.statusDivide = false
+                GameManager.main.textColorDivideSwitchLabel = UIColor.gray
+                labelDivide.textColor = GameManager.main.textColorDivideSwitchLabel
+            }
         }
     }
     

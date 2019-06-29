@@ -3,6 +3,7 @@ import UIKit
 class GameViewController: UIViewController {
     @IBOutlet weak var labelNumberOne: UILabel!
     @IBOutlet weak var labelNumberTwo: UILabel!
+    @IBOutlet weak var labelSign: UILabel!
     @IBOutlet weak var textFieldAnswer: UITextField!
     @IBOutlet weak var labelCommentAnswers: UILabel!
     @IBOutlet weak var labelLevelNumber: UILabel!
@@ -38,7 +39,7 @@ class GameViewController: UIViewController {
             case false:
                 if GameManager.main.statusGame == .stillPlaying {
                     labelCommentAnswers.textColor = UIColor.red
-                    labelCommentAnswers.text = "НЕ ВЕРНО!!!! ОТВЕТ = \(GameManager.main.numberOne + GameManager.main.numberTwo)"
+                    labelCommentAnswers.text = "НЕ ВЕРНО!!!! ОТВЕТ = \(GameManager.main.trueAnswer)"
                     labelWrongAnswers.text = "Ошибки - \(GameManager.main.wrongAnswersCounter)"
                     buttonCheck.isHidden  = true
                     buttonNext.isHidden = false
@@ -58,6 +59,7 @@ class GameViewController: UIViewController {
         buttonNext.isHidden = true
         labelCommentAnswers.isHidden = true
         buttonCheck.isHidden = false
+        GameManager.main.setAction()
         GameManager.main.generateNumbers()
         updateLabels()
     }
@@ -65,6 +67,7 @@ class GameViewController: UIViewController {
     func updateLabels() {
         labelNumberOne.text = "\(GameManager.main.numberOne)"
         labelNumberTwo.text = "\(GameManager.main.numberTwo)"
+        labelSign.text = GameManager.main.sign
         labelLevelNumber.text = "Уровень - \(GameManager.main.level)"
         labelPointsScored.text = "Количество баллов - \(GameManager.main.pointsScored)"
         labelExampleNumber.text = "Пример - \(GameManager.main.exampleNumber)"
